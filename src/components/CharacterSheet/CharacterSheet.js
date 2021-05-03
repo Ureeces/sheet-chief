@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Box, makeStyles, Drawer as MUIDrawer } from "@material-ui/core";
+import { Paper, Box, makeStyles, Button } from "@material-ui/core";
 
 import TopBox from "./TopBox";
 import ACSpeedHPInit from "./ACSpeedHPInitBox";
@@ -31,7 +31,7 @@ const CharacterSheet = (props) => {
 
       <br></br>
 
-      <Box display="flex" justifyContent="space-evenly">
+      <Box display="flex" justifyContent="space-evenly" margin="auto">
         <ACSpeedHPInit />
         <SavingThrowsBox font={font} />
       </Box>
@@ -40,7 +40,15 @@ const CharacterSheet = (props) => {
 
       <AbilityScores />
 
-      <MUIDrawer />
+      <br></br>
+
+      <Button variant="contained" color="primary">
+        Save
+      </Button>
+      {"   "}
+      <Button variant="contained" color="primary">
+        Save & Exit
+      </Button>
     </Paper>
   );
 };

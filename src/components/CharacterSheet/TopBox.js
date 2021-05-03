@@ -6,6 +6,7 @@ import Logo from "../../assets/images/DnD_Logo.png";
 const useStyles = makeStyles({
   container: {
     display: "flex",
+    margin: "auto",
   },
 
   charInfoContainer: {

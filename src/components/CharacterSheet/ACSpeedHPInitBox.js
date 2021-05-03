@@ -8,13 +8,14 @@ const useStyles = makeStyles({
     height: "350",
     width: "35%",
     padding: "15px",
-    display: "flex",
   },
 
   acSpeedInitInput: {
     width: "75px",
     textAlign: "center",
     height: "100%",
+    display: "flex",
+    margin: "auto",
   },
 
   inputBackground: {
