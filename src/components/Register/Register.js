@@ -64,11 +64,11 @@ const Register = (props) => {
 
       <Box>
         <TextField
-          id="username"
+          id="email"
           variant="outlined"
-          placeholder="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           InputProps={{ className: classes.inputBackground }}
         />
       </Box>
@@ -76,11 +76,11 @@ const Register = (props) => {
 
       <Box>
         <TextField
-          id="email"
+          id="username"
           variant="outlined"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          placeholder="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           InputProps={{ className: classes.inputBackground }}
         />
       </Box>

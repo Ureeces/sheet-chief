@@ -3,9 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-// import { createStore } from "redux";
-// import { Provider } from "react-redux";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+
+import characterReducer from "./redux/reducers/CharacterReducer";
+
+const characterStore = createStore(characterReducer);
 
 const fonts = {
   spartan: "'Spartan', sans-serif",
@@ -26,9 +30,11 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <Provider store={characterStore}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

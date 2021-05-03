@@ -7,6 +7,7 @@ import {
   ListItem,
   Typography,
 } from "@material-ui/core";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles({
   savingThrowsBackground: {
@@ -37,6 +38,21 @@ const useStyles = makeStyles({
 
 const SavingThrowsBox = (props) => {
   const classes = useStyles();
+
+  const getModValue = (score) => {
+    let result = Math.floor((parseInt(score) - 10) / 2);
+
+    if (isNaN(result)) {
+      return 0;
+    } else {
+      if (result > 0) {
+        return "+" + result;
+      } else {
+        return "" + result;
+      }
+    }
+  };
+
   return (
     <Box
       id="saving-throws-background"
@@ -48,32 +64,62 @@ const SavingThrowsBox = (props) => {
       >
         <List id="saving-throw-list" className={classes.savingThrowList}>
           <ListItem>
-            <TextField id="str-save" className={classes.throwField} />
+            <TextField
+              id="str-save"
+              className={classes.throwField}
+              disabled
+              value={getModValue(props.character.strScore)}
+            />
             <label>Strength</label>
           </ListItem>
 
           <ListItem>
-            <TextField id="dex-save" className={classes.throwField} />
+            <TextField
+              id="dex-save"
+              className={classes.throwField}
+              disabled
+              value={getModValue(props.character.dexScore)}
+            />
             <label>Dexterity</label>
           </ListItem>
 
           <ListItem>
-            <TextField id="con-save" className={classes.throwField} />
+            <TextField
+              id="con-save"
+              className={classes.throwField}
+              disabled
+              value={getModValue(props.character.conScore)}
+            />
             <label>Constitution</label>
           </ListItem>
 
           <ListItem>
-            <TextField id="int-save" className={classes.throwField} />
+            <TextField
+              id="int-save"
+              className={classes.throwField}
+              disabled
+              value={getModValue(props.character.intScore)}
+            />
             <label>Intelligence</label>
           </ListItem>
 
           <ListItem>
-            <TextField id="wis-save" className={classes.throwField} />
+            <TextField
+              id="wis-save"
+              className={classes.throwField}
+              disabled
+              value={getModValue(props.character.wisScore)}
+            />
             <label>Wisdom</label>
           </ListItem>
 
           <ListItem>
-            <TextField id="cha-save" className={classes.throwField} />
+            <TextField
+              id="cha-save"
+              className={classes.throwField}
+              disabled
+              value={getModValue(props.character.chaScore)}
+            />
             <label>Charisma</label>
           </ListItem>
         </List>
@@ -84,4 +130,10 @@ const SavingThrowsBox = (props) => {
   );
 };
 
-export default SavingThrowsBox;
+const mapStateToProps = (state) => {
+  return {
+    character: state.character,
+  };
+};
+
+export default connect(mapStateToProps)(SavingThrowsBox);

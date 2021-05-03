@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, TextField, List, ListItem, makeStyles } from "@material-ui/core";
+import { connect } from "react-redux";
 
 const styles = makeStyles({
   abilityContainer: {
@@ -33,6 +34,7 @@ const AbilityScores = (props) => {
             variant="outlined"
             helperText="Strength"
             InputProps={{ className: classes.inputBackground }}
+            onChange={(e) => props.changeCharDetail("strScore", e.target.value)}
           />
         </ListItem>
 
@@ -42,6 +44,7 @@ const AbilityScores = (props) => {
             variant="outlined"
             helperText="Dexterity"
             InputProps={{ className: classes.inputBackground }}
+            onChange={(e) => props.changeCharDetail("dexScore", e.target.value)}
           />
         </ListItem>
 
@@ -51,6 +54,7 @@ const AbilityScores = (props) => {
             variant="outlined"
             helperText="Constitution"
             InputProps={{ className: classes.inputBackground }}
+            onChange={(e) => props.changeCharDetail("conScore", e.target.value)}
           />
         </ListItem>
 
@@ -60,6 +64,7 @@ const AbilityScores = (props) => {
             variant="outlined"
             helperText="Intelligence"
             InputProps={{ className: classes.inputBackground }}
+            onChange={(e) => props.changeCharDetail("intScore", e.target.value)}
           />
         </ListItem>
 
@@ -69,6 +74,7 @@ const AbilityScores = (props) => {
             variant="outlined"
             helperText="Wisdom"
             InputProps={{ className: classes.inputBackground }}
+            onChange={(e) => props.changeCharDetail("wisScore", e.target.value)}
           />
         </ListItem>
 
@@ -78,6 +84,7 @@ const AbilityScores = (props) => {
             variant="outlined"
             helperText="Charisma"
             InputProps={{ className: classes.inputBackground }}
+            onChange={(e) => props.changeCharDetail("chaScore", e.target.value)}
           />
         </ListItem>
       </List>
@@ -85,4 +92,10 @@ const AbilityScores = (props) => {
   );
 };
 
-export default AbilityScores;
+const mapStateToProps = (state) => {
+  return {
+    character: state.character,
+  };
+};
+
+export default connect(mapStateToProps)(AbilityScores);

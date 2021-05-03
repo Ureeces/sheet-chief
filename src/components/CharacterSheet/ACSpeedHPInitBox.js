@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles, Box, TextField } from "@material-ui/core";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles({
   charVarBox: {
@@ -32,6 +33,11 @@ const useStyles = makeStyles({
 
 const ACSpeedHPInit = (props) => {
   const classes = useStyles();
+
+  const getInitiative = (score) => {
+    return Math.floor((score - 10) / 2);
+  };
+
   return (
     <Box id="ac-speed-init-hp" className={classes.charVarBox}>
       <Box>
@@ -43,6 +49,7 @@ const ACSpeedHPInit = (props) => {
           InputProps={{
             className: classes.inputBackground,
           }}
+          onChange={(e) => props.changeCharDetail("armorClass", e.target.value)}
         />
       </Box>
 
@@ -55,6 +62,8 @@ const ACSpeedHPInit = (props) => {
           InputProps={{
             className: classes.inputBackground,
           }}
+          disabled
+          value={getInitiative(props.character.dexScore)}
         />
       </Box>
 
@@ -67,6 +76,7 @@ const ACSpeedHPInit = (props) => {
           InputProps={{
             className: classes.inputBackground,
           }}
+          onChange={(e) => props.changeCharDetail("speed", e.target.value)}
         />
       </Box>
 
@@ -74,15 +84,31 @@ const ACSpeedHPInit = (props) => {
       <br></br>
 
       <label for="maxHP">Maximum Hitpoints</label>
-      <TextField id="maxHP" variant="standard" className={classes.hitpoints} />
+      <TextField
+        id="maxHP"
+        variant="standard"
+        className={classes.hitpoints}
+        onChange={(e) => props.changeCharDetail("maxHP", e.target.value)}
+      />
 
       <br></br>
       <br></br>
 
-      <label for="maxHP">Current Hitpoints</label>
-      <TextField id="currHP" variant="standard" className={classes.hitpoints} />
+      <label for="currHP">Current Hitpoints</label>
+      <TextField
+        id="currHP"
+        variant="standard"
+        className={classes.hitpoints}
+        onChange={(e) => props.changeCharDetail("currHP", e.target.value)}
+      />
     </Box>
   );
 };
 
-export default ACSpeedHPInit;
+const mapStateToProps = (state) => {
+  return {
+    character: state.character,
+  };
+};
+
+export default connect(mapStateToProps)(ACSpeedHPInit);
