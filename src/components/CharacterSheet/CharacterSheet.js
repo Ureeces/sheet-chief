@@ -30,7 +30,9 @@ const CharacterSheet = (props) => {
     const temp = JSON.parse(localStorage.getItem("jwtToken"));
     const id = temp.id;
     Axios.post(
-      process.env.REACT_APP_MONGODB_URL + "/character/create-character/" + id,
+      process.env.REACT_APP_MONGODB_URL +
+        "/api/character/create-character/" +
+        id,
       props.character
     )
       .then((response) => {

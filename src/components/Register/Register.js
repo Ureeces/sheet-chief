@@ -43,7 +43,7 @@ const Register = (props) => {
   });
 
   const handleRegisterSubmit = () => {
-    Axios.post(process.env.REACT_APP_MONGODB_URL + "/users/sign-up", {
+    Axios.post(process.env.REACT_APP_MONGODB_URL + "/api/users/sign-up", {
       username: username,
       email: email,
       password: password,
@@ -52,7 +52,7 @@ const Register = (props) => {
         history.push("/sign-in");
       })
       .catch((error) => {
-        alert(error);
+        alert(error.status + " : " + error.message);
       });
   };
 

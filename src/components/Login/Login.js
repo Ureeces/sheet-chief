@@ -44,7 +44,7 @@ const Login = (props) => {
   });
 
   const handleLoginSubmit = () => {
-    Axios.post(process.env.REACT_APP_MONGODB_URL + "/users/sign-in", {
+    Axios.post(process.env.REACT_APP_MONGODB_URL + "/api/users/sign-in", {
       email: email,
       password: password,
     })
@@ -55,9 +55,8 @@ const Login = (props) => {
         history.push("/");
       })
       .catch((error) => {
-        alert(error);
+        alert(error.status + " : " + error.message);
       });
-
   };
 
   return (

@@ -57,54 +57,54 @@ const Sheets = (props) => {
   const [charIDs, setCharIDs] = useState([]);
   const [characterList, setCharacterList] = useState([]);
 
-  const fetchCharacterIDs = async () => {
-    console.log("Fetching Character IDs");
-    let temp = JSON.parse(localStorage.getItem("jwtToken"));
-    let id = temp.id;
-
-    try {
-      let tempCharIDs = await Axios.get(
-        process.env.REACT_APP_MONGODB_URL +
-          "/character/get-all-user-characters/" +
-          id
-      );
-
-      return Promise.resolve(tempCharIDs.data);
-    } catch (error) {
-      console.log(error);
-      return Promise.reject(error);
-    }
-
-    console.log("CharIDs:", charIDs);
-  };
-
-  const fetchCharacterList = async () => {
-    console.log("Fetching CharacterList");
-
-    for (let currID of charIDs) {
-      let tempChar = await Axios.get(
-        process.env.REACT_APP_MONGODB_URL +
-          "/character/get-character-by-id/" +
-          currID
-      );
-
-      setCharacterList([...characterList, tempChar]);
-    }
-
-    Promise.resolve();
-
-    console.log("CharList", characterList);
-  };
-
-  const handleLoadCharacters = async () => {
-    await fetchCharacterIDs();
-    // fetchCharacterList();
-  };
+  // const handleLoadCharacters = async () => {
+  //   await fetchCharacterIDs();
+  //   // fetchCharacterList();
+  // };
 
   useEffect(() => {
     if (!localStorage.getItem("jwtToken")) {
       history.push("/");
     }
+
+    const fetchCharacterIDs = async () => {
+      console.log("Fetching Character IDs");
+      let temp = JSON.parse(localStorage.getItem("jwtToken"));
+      let id = temp.id;
+
+      try {
+        let tempCharIDs = await Axios.get(
+          process.env.REACT_APP_MONGODB_URL +
+            "/api/character/get-all-user-characters/" +
+            id
+        );
+
+        setCharIDs(tempCharIDs.data);
+      } catch (error) {
+        console.log(error);
+      }
+
+      console.log("CharIDs:", charIDs);
+    };
+
+    const fetchCharacterList = async () => {
+      console.log("Fetching CharacterList");
+
+      for (let currID of charIDs) {
+        let tempChar = await Axios.get(
+          process.env.REACT_APP_MONGODB_URL +
+            "/api/character/get-character-by-id/" +
+            currID
+        );
+
+        setCharacterList([...characterList, tempChar.data]);
+      }
+
+      console.log("CharList", characterList);
+    };
+
+    fetchCharacterIDs();
+    fetchCharacterList();
   }, []);
 
   return (
@@ -120,13 +120,13 @@ const Sheets = (props) => {
         My Sheets
       </Typography>
 
-      <Button
+      {/* <Button
         variant="contained"
         color="primary"
         onClick={handleLoadCharacters}
       >
         Load Characters
-      </Button>
+      </Button> */}
 
       <br></br>
 
