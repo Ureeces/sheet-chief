@@ -24,7 +24,7 @@ const App = (props) => {
       <Suspense
         fallback={
           <div>
-            <CircularProgress />
+            <CircularProgress color="primary" />
           </div>
         }
       >

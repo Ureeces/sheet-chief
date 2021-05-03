@@ -52,12 +52,12 @@ const Login = (props) => {
         let jwtToken = response.data.token;
         let decoded = jwt_decode(jwtToken);
         localStorage.setItem("jwtToken", JSON.stringify(decoded));
+        history.push("/");
       })
       .catch((error) => {
         alert(error);
       });
 
-    history.push("/");
   };
 
   return (

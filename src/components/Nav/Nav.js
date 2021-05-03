@@ -24,12 +24,19 @@ const useStyles = makeStyles({
   },
 });
 
+const useForceUpdate = () => {
+  const [value, setValue] = useState(0);
+  return () => setValue((value) => value + 1); //
+};
+
 const Nav = (props) => {
   const classes = useStyles(props);
   const { history } = props;
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState("");
+
+  const forceUpdate = useForceUpdate();
 
   useEffect(() => {
     if (localStorage.getItem("jwtToken")) {
@@ -40,7 +47,7 @@ const Nav = (props) => {
       setIsLoggedIn(false);
       setUser("");
     }
-  }, []);
+  });
 
   const navListNotLoggedIn = [
     {
@@ -67,6 +74,7 @@ const Nav = (props) => {
       onClick: () => {
         localStorage.removeItem("jwtToken");
         history.push("/");
+        forceUpdate();
       },
     },
   ];

@@ -49,13 +49,11 @@ const Register = (props) => {
       password: password,
     })
       .then((response) => {
-        console.log(response);
+        history.push("/sign-in");
       })
       .catch((error) => {
         alert(error);
       });
-
-    history.push("/sign-in");
   };
 
   return (
