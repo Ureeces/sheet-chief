@@ -86,7 +86,7 @@ const Nav = (props) => {
           <List>
             {navListNotLoggedIn.map(({ text, address }) => {
               return (
-                <ListItem button component={NavLink} to={address}>
+                <ListItem button component={NavLink} to={address} key={text}>
                   <ListItemText primary={text} />
                 </ListItem>
               );
@@ -98,7 +98,7 @@ const Nav = (props) => {
           <List>
             {navListLoggedIn.map(({ text, onClick }) => {
               return (
-                <ListItem button onClick={onClick}>
+                <ListItem button onClick={onClick} key={text}>
                   <ListItemText>{text}</ListItemText>
                 </ListItem>
               );

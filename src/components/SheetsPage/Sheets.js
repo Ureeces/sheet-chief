@@ -57,42 +57,48 @@ const Sheets = (props) => {
   const [charIDs, setCharIDs] = useState([]);
   const [characterList, setCharacterList] = useState([]);
 
-  const fetchCharacterIDs = () => {
+  const fetchCharacterIDs = async () => {
+    console.log("Fetching Character IDs");
     let temp = JSON.parse(localStorage.getItem("jwtToken"));
     let id = temp.id;
 
-    Axios.get(
-      process.env.REACT_APP_MONGODB_URL +
-        "/character/get-all-user-characters/" +
-        id
-    )
-      .then((response) => {
-        let tempIDs = response.data;
-        setCharIDs(tempIDs);
-      })
-      .catch((error) => {
-        alert(error);
-      });
+    try {
+      let tempCharIDs = await Axios.get(
+        process.env.REACT_APP_MONGODB_URL +
+          "/character/get-all-user-characters/" +
+          id
+      );
+
+      return Promise.resolve(tempCharIDs.data);
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
+
+    console.log("CharIDs:", charIDs);
   };
 
-  const fetchCharacterList = () => {
-    fetchCharacterIDs();
-
-    console.log("character IDs:", charIDs);
+  const fetchCharacterList = async () => {
+    console.log("Fetching CharacterList");
 
     for (let currID of charIDs) {
-      Axios.get(
+      let tempChar = await Axios.get(
         process.env.REACT_APP_MONGODB_URL +
           "/character/get-character-by-id/" +
           currID
-      )
-        .then((response) => {
-          setCharacterList([...characterList, response.data]);
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      );
+
+      setCharacterList([...characterList, tempChar]);
     }
+
+    Promise.resolve();
+
+    console.log("CharList", characterList);
+  };
+
+  const handleLoadCharacters = async () => {
+    await fetchCharacterIDs();
+    // fetchCharacterList();
   };
 
   useEffect(() => {
@@ -114,7 +120,11 @@ const Sheets = (props) => {
         My Sheets
       </Typography>
 
-      <Button variant="contained" color="primary" onClick={fetchCharacterList}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleLoadCharacters}
+      >
         Load Characters
       </Button>
 
@@ -146,7 +156,7 @@ const Sheets = (props) => {
       </Modal>
 
       <Box>
-        {characterList.map(({ characterName }) => {
+        {characterList.map(({ characterName, _id }) => {
           return <Box className={classes.characterBox}>{characterName}</Box>;
         })}
       </Box>
