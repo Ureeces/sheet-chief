@@ -1,13 +1,14 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import MainPage from "./components/MainPage/MainPage";
-import Nav from "./components/Nav/Nav";
-import Sheets from "./components/SheetsPage/Sheets";
-import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
-// import Sheet from "./components/CharacterSheet/CharacterSheet";
+import { makeStyles, CircularProgress } from "@material-ui/core";
 
-import { makeStyles } from "@material-ui/core";
+import Nav from "./components/Nav/Nav";
+
+const MainPage = lazy(() => import("./components/MainPage/MainPage"));
+const Sheets = lazy(() => import("./components/SheetsPage/Sheets"));
+const Login = lazy(() => import("./components/Login/Login"));
+const Register = lazy(() => import("./components/Register/Register"));
+const NotFound = lazy(() => import("./components/NotFound/NotFound"));
 
 const styles = makeStyles({
   container: {
@@ -20,17 +21,24 @@ const App = (props) => {
 
   return (
     <div className={classes.container}>
-      <Router>
-        <Nav />
-        <Switch>
-          <Route exact path="/" component={MainPage} />
-          <Route exact path="/sheets" component={Sheets} />
-          {/* <Route exact path="/dice-roller" component={DiceRoller} /> */}
-          <Route exact path="/sign-in" component={Login} />
-          <Route exact path="/register" component={Register} />
-          {/* <Route exact path="/sheet" component={Sheet} /> */}
-        </Switch>
-      </Router>
+      <Suspense
+        fallback={
+          <div>
+            <CircularProgress />
+          </div>
+        }
+      >
+        <Router>
+          <Nav />
+          <Switch>
+            <Route exact path="/" component={MainPage} />
+            <Route exact path="/sheets" component={Sheets} />
+            <Route exact path="/sign-in" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route path="" component={NotFound} />
+          </Switch>
+        </Router>
+      </Suspense>
     </div>
   );
 };

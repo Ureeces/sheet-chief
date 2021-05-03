@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -9,6 +9,8 @@ import {
 } from "@material-ui/core";
 
 import { Link as NavLink } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import Axios from "axios";
 
 import Image from "../../assets/backgrounds/parchment2.jpg";
 
@@ -32,6 +34,31 @@ const Login = (props) => {
   const classes = styles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { history } = props;
+
+  useEffect(() => {
+    if (localStorage.getItem("jwtToken")) {
+      history.push("/");
+    }
+  });
+
+  const handleLoginSubmit = () => {
+    Axios.post(process.env.REACT_APP_MONGODB_URL + "/users/sign-in", {
+      email: email,
+      password: password,
+    })
+      .then((response) => {
+        let jwtToken = response.data.token;
+        let decoded = jwt_decode(jwtToken);
+        localStorage.setItem("jwtToken", JSON.stringify(decoded));
+      })
+      .catch((error) => {
+        alert(error);
+      });
+
+    history.push("/");
+  };
 
   return (
     <Box className={classes.parchmentBackground} p={1}>
@@ -65,11 +92,7 @@ const Login = (props) => {
       <br></br>
 
       <Box>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => console.log(localStorage)}
-        >
+        <Button color="primary" variant="contained" onClick={handleLoginSubmit}>
           Sign Me In!
         </Button>
       </Box>

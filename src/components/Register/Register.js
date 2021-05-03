@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 
 import { Link as NavLink } from "react-router-dom";
-
+import Axios from "axios";
 import Image from "../../assets/backgrounds/parchment2.jpg";
 
 const styles = makeStyles({
@@ -33,6 +33,30 @@ const Register = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
+  const { history } = props;
+
+  useEffect(() => {
+    if (localStorage.getItem("jwtToken")) {
+      history.push("/");
+    }
+  });
+
+  const handleRegisterSubmit = () => {
+    Axios.post(process.env.REACT_APP_MONGODB_URL + "/users/sign-up", {
+      username: username,
+      email: email,
+      password: password,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+
+    history.push("/sign-in");
+  };
 
   return (
     <Box p={1} className={classes.parchmentBackground}>
@@ -81,7 +105,7 @@ const Register = (props) => {
         <Button
           color="primary"
           variant="contained"
-          onClick={() => console.log(username, email, password)}
+          onClick={handleRegisterSubmit}
         >
           Sign Me Up!
         </Button>

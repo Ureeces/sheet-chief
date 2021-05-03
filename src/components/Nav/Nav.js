@@ -1,5 +1,5 @@
-import React from "react";
-import { withRouter, NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, withRouter } from "react-router-dom";
 
 import {
   Drawer as MUIDrawer,
@@ -18,45 +18,89 @@ const useStyles = makeStyles({
   },
 
   drawer: {
-    width: "100px",
+    width: "125px",
+    backgroundColor: "#632a11",
+    borderStyle: "none",
   },
 });
 
 const Nav = (props) => {
   const classes = useStyles(props);
+  const { history } = props;
 
-  const navList = [
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("jwtToken")) {
+      setIsLoggedIn(true);
+      let temp = JSON.parse(localStorage.getItem("jwtToken"));
+      setUser(temp.username);
+    } else {
+      setIsLoggedIn(false);
+      setUser("");
+    }
+  }, []);
+
+  const navListNotLoggedIn = [
     {
       text: "Home",
       address: "/",
     },
-    {
-      text: "My Sheets",
-      address: "/sheets",
-    },
-
-    // {
-    //   text: "Dice Roller",
-    //   address: "/dice-roller"
     {
       text: "Sign In",
       address: "/sign-in",
     },
   ];
 
+  const navListLoggedIn = [
+    {
+      text: "Home",
+      onClick: () => history.push("/"),
+    },
+    {
+      text: "My Sheets",
+      onClick: () => history.push("/sheets"),
+    },
+    {
+      text: "Logout",
+      onClick: () => {
+        localStorage.removeItem("jwtToken");
+        history.push("/");
+      },
+    },
+  ];
+
   return (
     <MUIDrawer variant="permanent" className={classes.drawer}>
-      <div className={classes.drawerStyle}>
-        <List>
-          {navList.map(({ text, address }) => {
-            return (
-              <ListItem button component={NavLink} to={address}>
-                <ListItemText primary={text} />
-              </ListItem>
-            );
-          })}
-        </List>
-      </div>
+      {!isLoggedIn ? (
+        <div className={classes.drawerStyle}>
+          <List>
+            {navListNotLoggedIn.map(({ text, address }) => {
+              return (
+                <ListItem button component={NavLink} to={address}>
+                  <ListItemText primary={text} />
+                </ListItem>
+              );
+            })}
+          </List>
+        </div>
+      ) : (
+        <div className={classes.drawerStyle}>
+          <List>
+            {navListLoggedIn.map(({ text, onClick }) => {
+              return (
+                <ListItem button onClick={onClick}>
+                  <ListItemText>{text}</ListItemText>
+                </ListItem>
+              );
+            })}
+            <ListItem>
+              <ListItemText>{user}</ListItemText>
+            </ListItem>
+          </List>
+        </div>
+      )}
     </MUIDrawer>
   );
 };
